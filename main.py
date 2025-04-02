@@ -8,7 +8,7 @@ def get_ai_tools(query):
     """Fetch relevant AI tools using OpenAI API."""
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",  # Use GPT-3.5 for better stability
             messages=[
                 {"role": "system", "content": "You are an AI assistant that suggests relevant AI tools based on user queries."},
                 {"role": "user", "content": f"List the top AI tools for {query}."}
@@ -16,10 +16,19 @@ def get_ai_tools(query):
         )
         tools = response['choices'][0]['message']['content'].strip().split("\n")
         return [tool.strip("- ") for tool in tools if tool.strip()]
+    
+    except openai.error.AuthenticationError:
+        return ["❌ Invalid OpenAI API Key! Check your Streamlit Secrets."]
+    
+    except openai.error.RateLimitError:
+        return ["⚠️ Rate limit exceeded. Try again later."]
+    
     except openai.error.OpenAIError as e:
-        return [f"Error: {str(e)}"]
+        return [f"🚨 OpenAI API Error: {str(e)}"]
+    
     except Exception as e:
         return [f"Unexpected error: {str(e)}"]
+
 
 # Streamlit UI
 st.title("🔍 AI Tools Finder")
