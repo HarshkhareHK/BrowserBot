@@ -1,7 +1,7 @@
 import streamlit as st
 import openai
 
-# Load API key securely
+# Load API key securely from Streamlit Secrets
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Dummy AI tools data
@@ -11,6 +11,9 @@ dummy_tools = {
     "image processing": ["OpenCV", "DeepDream", "Runway ML", "Artbreeder", "DeepAI"],
     "text analysis": ["GPT-4", "BERT", "NLTK", "SpaCy", "TextBlob"]
 }
+
+# Flatten the AI tools list for search suggestions
+all_tools = [tool for tools in dummy_tools.values() for tool in tools]
 
 def get_dummy_ai_tools(query):
     """Return dummy AI tools based on query."""
@@ -38,17 +41,26 @@ def get_ai_tools(query):
         return f"Unexpected error: {str(e)}"
 
 # Streamlit UI
-st.title("AI Tools Finder")
+st.title("🔍 AI Tools Finder")
 st.write("Enter your query to find relevant AI tools!")
 
-query = st.text_input("Search for AI tools:")
+# Live search suggestions (AutoComplete)
+search_query = st.text_input("Search for AI tools:", key="search")
+
+# Filter suggestions based on user input
+suggestions = [tool for tool in all_tools if search_query.lower() in tool.lower()]
+
+if suggestions:
+    selected_tool = st.selectbox("Suggestions:", suggestions, index=0)
+else:
+    selected_tool = search_query  # Use input if no suggestions
 
 if st.button("Search"):
-    if query.strip():
+    if selected_tool.strip():
         with st.spinner("Fetching AI tools..."):
-            tools_list = get_dummy_ai_tools(query)
+            tools_list = get_dummy_ai_tools(selected_tool)
             if not tools_list:  # If no dummy data, fallback to OpenAI
-                tools_list = get_ai_tools(query)
+                tools_list = get_ai_tools(selected_tool)
         st.markdown(tools_list)
     else:
         st.error("Please enter a valid search query.")
