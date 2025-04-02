@@ -30,13 +30,15 @@ tools = [
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Function to get OpenAI embeddings
+# Function to get OpenAI embeddings (Updated API v1)
 def get_openai_embedding(text):
-    response = openai.Embedding.create(
+    client = openai.OpenAI()  # Ensure you're using the latest OpenAI library
+    response = client.embeddings.create(
         input=text,
         model="text-embedding-ada-002"
     )
-    return np.array(response["data"][0]["embedding"])
+    return np.array(response.data[0].embedding)
+
 
 def build_index(tools):
     """Builds a FAISS index for tool descriptions using OpenAI embeddings."""
