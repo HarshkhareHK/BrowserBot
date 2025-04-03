@@ -21,11 +21,17 @@ tools = [
     {"name": "AutoGPT", "description": "An AI agent that autonomously performs complex tasks using GPT models."},
     {"name": "Synthesia", "description": "An AI-based tool for creating synthetic videos with virtual avatars."},
     {"name": "Lumen5", "description": "An AI-powered video creation platform for marketing and content generation."},
+    {"name": "Pika Labs", "description": "An AI-powered video generation tool for animation and creative content."},
+    {"name": "DeepBrain AI", "description": "An AI tool for video synthesis and realistic AI avatars."},
     {"name": "Descript", "description": "An AI-powered tool for audio and video editing with transcription features."},
     {"name": "Notion AI", "description": "An AI-powered assistant integrated into Notion for writing and organization."},
     {"name": "Quillbot", "description": "An AI-based paraphrasing and writing enhancement tool."},
-    {"name": "Grammarly", "description": "An AI-powered writing assistant for grammar and style improvement."}
+    {"name": "Grammarly", "description": "An AI-powered writing assistant for grammar and style improvement."},
+    {"name": "Retell", "description": "An AI-powered tool for real-time voice and speech synthesis."},
+    {"name": "Vapi", "description": "An AI-driven API for generating and managing voice interactions."},
+    {"name": "OpenAI", "description": "A leading AI research and deployment company providing advanced AI models."}
 ]
+
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
